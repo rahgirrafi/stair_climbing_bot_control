@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"name": "stair_climbing_bot_control",
+			"path": "."
+		}
+	],
+	"settings": {}
+}

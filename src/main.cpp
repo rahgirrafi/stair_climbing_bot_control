@@ -1,18 +1,23 @@
 #include <Arduino.h>
+#include <SoftPWM.h>
+#include <Motor.h>
+#include <Robot.h>
+#include <MPU.h>
 
-// put function declarations here:
-int myFunction(int, int);
+Robot robot;
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  robot.init();
+
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
-}
+  robot.mpu.readAccel();
+  
+  
+  robot.mpu.print();
+  
+
+  }
+

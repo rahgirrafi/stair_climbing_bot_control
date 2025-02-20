@@ -8,35 +8,46 @@ Robot::Robot(){
 }
 
 void Robot::init(){
-    leftMotor.init();
-    rightMotor.init();
-    mpu.init();  
+    innerMotor.init();
+    outerMotor.init();
+    innerMPU.init();  
+    outerMPU.init();
 }
 
 void Robot::move(int8_t speed){
-    leftMotor.Speed(speed);
-    rightMotor.Speed(speed);
+    innerMotor.Speed(speed);
+    outerMotor.Speed(speed);
 }
 
-void Robot::move_PID(int8_t speed){
+void Robot::stair_climb(int8_t speed){
 
-    error = mpu.accelY;
-     
-    error = map(error, -1,1,-100,100);
-    float P = kp * error;
-    float D = kd * (error - lastError);
-    lastError = error;
-    float PID = P + D;
+    innerPID.setError(innerMPU.accelX);
+    outerPID.setError(outerMPU.accelX);
+    innerPID.calculate();
+    outerPID.calculate();
 
-    if(error>0){
-        leftMotor.Speed(speed + PID);
-        rightMotor.Speed(speed - PID);
+    Serial.print("innerPID: " + String(innerPID.PID_value) + " outerPID: " + String(outerPID.PID_value) + "\n");
+
+
+    if(innerPID.PID_value > 0){
+        outerMotor.Speed(speed - innerPID.PID_value);
+        innerMotor.Speed(speed);
+    }
+    
+    else if(innerPID.PID_value < 0){
+        innerMotor.Speed(speed - outerPID.PID_value);
+        outerMotor.Speed(speed);
+    }
+    
+    if(outerPID.PID_value > 0){
+        innerMotor.Speed(speed - outerPID.PID_value);
+        outerMotor.Speed(speed);
+    }
+    else if(outerPID.PID_value < 0){
+        outerMotor.Speed(speed - innerPID.PID_value);
+        innerMotor.Speed(speed);
     }
 
-    else{
-        leftMotor.Speed(speed - PID);
-        rightMotor.Speed(speed + PID);
-    }
 
 }
 

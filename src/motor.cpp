@@ -18,11 +18,11 @@ void Motor::init()
     
     pinMode(IN1, OUTPUT);
     pinMode(IN2, OUTPUT);
-    SoftPWMBegin();
-    SoftPWMSet(IN1, 0);
-    SoftPWMSet(IN2,0);
-    SoftPWMSetFadeTime(IN1,100,500);
-    SoftPWMSetFadeTime(IN2,100,500);
+    // SoftPWMBegin();
+    // SoftPWMSet(IN1, 0);
+    // SoftPWMSet(IN2,0);
+    // SoftPWMSetFadeTime(IN1,100,500);
+    // SoftPWMSetFadeTime(IN2,100,500);
 }
 
 
@@ -33,13 +33,15 @@ void Motor::Speed(int speed) {
 
 if(speed >= 0){
 
-    SoftPWMSetPercent(IN1, speed);
+    // SoftPWMSetPercent(IN1, speed);
+    digitalWrite(IN1, HIGH);
     digitalWrite(IN2, LOW);
     
 }
 else{
     digitalWrite(IN1, LOW);
-    SoftPWMSetPercent(IN2, -speed);
+    digitalWrite(IN2, HIGH);
+    // SoftPWMSetPercent(IN2, -speed);
 }
 
 }

@@ -14,9 +14,9 @@ void setup() {
 void loop() {
   
   robot.innerMPU.readAccel();
-  // robot.outerMPU.readAccel();
-  // robot.innerMPU.print();
-  // robot.outerMPU.print();
+  robot.outerMPU.readAccel();
+  robot.innerMPU.print();
+  robot.outerMPU.print();
   robot.stair_climb(100);
   
 

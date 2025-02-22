@@ -17,8 +17,9 @@ public:
     uint8_t speed; 
     Motor(uint8_t IN1, uint8_t IN2);
     void init();
-    void Speed(int speed);
-
+    void forward();
+    void backward();
+    void stop();
     // void setSpeed(uint8_t speed);
     // uint8_t getSpeed();
 

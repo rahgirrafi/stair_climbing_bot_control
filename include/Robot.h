@@ -12,8 +12,8 @@ class Robot{
     Motor innerMotor = Motor(2, 3);
     Motor outerMotor = Motor(4, 7);
     
-    MPU innerMPU = MPU(0x68);
-    MPU outerMPU = MPU(0x69);
+    MPU innerMPU = MPU(0x68, "Inner MPU");
+    MPU outerMPU = MPU(0x69, "Outer MPU");
 
     bool innerMove = false;
     bool outerMove = false;

@@ -11,8 +11,8 @@ class MPU
 {
 public:
     MPU();
-    MPU(int MPU_addr);
-
+    MPU(int MPU_addr, String name);
+    String name;
     int MPU_addr; // I2C address of the MPU-6050
     int PWR_MGMT_1 = 0x6B;
     

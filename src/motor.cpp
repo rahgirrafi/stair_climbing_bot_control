@@ -24,17 +24,17 @@ void Motor::init()
 void Motor::forward(){
     digitalWrite(IN1, HIGH);
     digitalWrite(IN2, LOW);
-    Serial.println("Forward");
+    // Serial.println("Forward");
 }
 
 void Motor::backward(){
     digitalWrite(IN1, LOW);
     digitalWrite(IN2,HIGH);
-    Serial.println("Backward");
+    // Serial.println("Backward");
 }
 
 void Motor::stop(){
     digitalWrite(IN1, LOW);
     digitalWrite(IN2, LOW);
-    Serial.println("Stop");
+    // Serial.println("Stop");
 }

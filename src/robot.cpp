@@ -8,10 +8,12 @@ Robot::Robot(){
 }
 
 void Robot::init(){
+    Wire.begin();
     innerMotor.init();
     outerMotor.init();
     innerMPU.init();  
     outerMPU.init();
+    
 }
 
 
@@ -19,43 +21,60 @@ void Robot::init(){
 
 void Robot::stair_climb(int8_t speed){
 
-    outerMPU.accelX = 0.05;
-    outerMPU.accelZ = 1.5;
-    if (innerMPU.accelX>0.40 && innerMPU.accelZ<1.07 && outerMPU.accelX<0.08 && outerMPU.accelZ>1.11){   
-        innerMove = true;
-        outerMove = false;
-        // Serial.println("Inner Move");
-    }
 
-    else if(innerMPU.accelX<0.08 && innerMPU.accelZ>1.11 && outerMPU.accelX>0.40 && outerMPU.accelZ<1.07){
-        innerMove = false;
-        outerMove = true;
+   if(innerMPU.accelX>0.4){
+    while (innerMPU.accelX>0.08)
+    {
+        innerMPU.readAccel();
+        outerMPU.readAccel();
+        innerMPU.print();
+        outerMPU.print();
+        innerMotor.forward();
+        outerMotor.stop();
     }
+   }
 
-    
-    if(innerMove){
+   else if(outerMPU.accelX>0.4){
+    while (outerMPU.accelX>0.08)
+    {
+        innerMPU.readAccel();
+        outerMPU.readAccel();
+        innerMPU.print();
+        outerMPU.print();
+        outerMotor.forward();
+        innerMotor.stop();
+    }
+   }
+
+   else if(innerMPU.accelX<-0.4){
+    while (innerMPU.accelX<-0.08)
+    {
+        innerMPU.readAccel();
+        outerMPU.readAccel();
+        innerMPU.print();
+        outerMPU.print();
+        innerMotor.backward();
+        outerMotor.stop();
+    }
+   }
+
+   else if(outerMPU.accelX<-0.4){
+    while (outerMPU.accelX<-0.08)
+    {
+        innerMPU.readAccel();
+        outerMPU.readAccel();
+        innerMPU.print();
+        outerMPU.print();
+        outerMotor.backward();
+        innerMotor.stop();
+    }
+   }
+   else{
+    innerMotor.forward();
+    outerMotor.forward();
+   }
+
+
         
-    if(innerMPU.accelX>0.40 && innerMPU.accelZ<1.07){
-        innerMotor.stop();
-        outerMotor.forward();
-    }
-
-    if(innerMPU.accelX<0.08  && innerMPU.accelZ>1.11){
-        innerMotor.forward();
-        outerMotor.forward();
-    }
-
-    }
-
-    if(outerMove){
-    if(outerMPU.accelX>0.40){
-        innerMotor.stop();
-        outerMotor.forward();
-    }
-
-    if(outerMPU.accelX<0.08){
-        innerMotor.forward();
-        outerMotor.forward();
-    }
-}
+    
 }

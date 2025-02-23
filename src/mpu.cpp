@@ -1,11 +1,12 @@
 #include <Arduino.h>
 #include <MPU.h>
-
+#include <Wire.h>
 MPU::MPU(){
     MPU_addr = 0x68;
 }
 
-MPU::MPU(int MPU_addr){
+MPU::MPU(int MPU_addr, String name){
+    this->name = name;
     this->MPU_addr = MPU_addr;
 }
 
@@ -14,7 +15,7 @@ void MPU::init(){
     Wire.beginTransmission(MPU_addr); //This is the I2C address of the MPU (b1101000/b1101001 for AC0 low/high datasheet sec. 9.2)
     Wire.write(0x6B); //Accessing the register 6B - Power Management (Sec. 4.28)
     Wire.write(0); //Setting SLEEP register to 0. (Required; see Note on p. 9)
-    Wire.endTransmission();  
+    Wire.endTransmission(true);  
   //Gyroscope Configuration
     // Wire.beginTransmission(0b1101000); //I2C address of the MPU
     // Wire.write(0x1B); //Accessing the register 1B - Gyroscope Configuration (Sec. 4.4) 
@@ -24,17 +25,17 @@ void MPU::init(){
     Wire.beginTransmission(MPU_addr); //I2C address of the MPU
     Wire.write(0x1C); //Accessing the register 1C - Acccelerometer Configuration (Sec. 4.5) 
     Wire.write(0); //Setting the accel to +/- 2g
-    Wire.endTransmission(); 
+    Wire.endTransmission(true); 
     Serial.begin(9600);
     
    
 }
 
 void MPU::readAccel(){
-    Wire.beginTransmission(0b1101000); //I2C address of the MPU
+    Wire.beginTransmission(MPU_addr); //I2C address of the MPU
     Wire.write(0x3B); //Starting register for Accel Readings
-    Wire.endTransmission();
-    Wire.requestFrom(0b1101000,6); //Request Accel Registers (3B - 40)
+    Wire.endTransmission(false);
+    Wire.requestFrom(MPU_addr,6); //Request Accel Registers (3B - 40)
     while(Wire.available() < 6);
     accelX = Wire.read()<<8|Wire.read(); //Store first two bytes into accelX
     accelY = Wire.read()<<8|Wire.read(); //Store middle two bytes into accelY
@@ -73,7 +74,7 @@ float MPU::lowPassFilter(float x, float alpha){
   void MPU::print() {
         // Serial.print( "angleX = " + String(angleX) + '\t' + "angleY = " + String(angleY) + '\t' + "angleZ = " + String(angleZ) + '\n'); 
         // Serial.print( "roll = " + String(roll) + '\t' + "pitch = " + String(pitch) + '\t' + "yaw = " + String(yaw) + '\n');
-        Serial.print( "accelX = " + String(accelX) + '\t' + "accelY = " + String(accelY) + '\t' + "accelZ = " + String(accelZ) + '\t' + "gyroX = " + String(gyroX) + '\t' + "gyroY = " + String(gyroY) + '\t' + "gyroZ = " + String(gyroZ) + '\n');
+        Serial.print( name + "accelX = " + String(accelX) + '\t' + "accelY = " + String(accelY) + '\t' + "accelZ = " + String(accelZ) + '\t' + "gyroX = " + String(gyroX) + '\t' + "gyroY = " + String(gyroY) + '\t' + "gyroZ = " + String(gyroZ) + '\n');
     }
 
 

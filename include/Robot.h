@@ -9,8 +9,11 @@ class Robot{
 
    
    
-    Motor innerMotor = Motor(2, 3);
-    Motor outerMotor = Motor(4, 7);
+    Motor innerMotorLeft = Motor(5, 8);
+    Motor innerMotorRight = Motor(6, 9);
+    Motor outerMotorLeft = Motor(10, 11);
+    Motor outerMotorRight = Motor(12, 13);
+    
     
     MPU innerMPU = MPU(0x68, "Inner MPU");
     MPU outerMPU = MPU(0x69, "Outer MPU");

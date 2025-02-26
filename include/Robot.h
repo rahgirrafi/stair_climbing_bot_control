@@ -56,7 +56,7 @@ class Robot{
     Motor rightMotor = Motor(3, 7);
     
     
-    char getCommand();
+    
     MPU innerMPU = MPU(0x68, "Inner MPU");
     MPU outerMPU = MPU(0x69, "Outer MPU");
 
@@ -70,8 +70,10 @@ class Robot{
     Robot();
     void init();
     void move();
+    char getCommand();
     
-    void stair_climb(uint8_t climb_type);
+    void stair_climb_outer_first();
+    void stair_climb_inner_first();
 
     void climb_up_inner();
     void climb_down_inner();

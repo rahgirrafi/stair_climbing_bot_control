@@ -16,8 +16,8 @@ void loop() {
   
   robot.innerMPU.readAccel();
   robot.outerMPU.readAccel();
-  robot.innerMPU.print();
-  // robot.outerMPU.print();
+  // robot.innerMPU.print();
+  robot.outerMPU.print();
   // robot.stair_climb(100);
 
 //  Serial.println("Enter Command");

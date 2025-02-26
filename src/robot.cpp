@@ -88,17 +88,10 @@ void Robot::outer_stop(){
 
 
 
-void Robot::stair_climb(uint8_t climb_type){
+void Robot::stair_climb_outer_first(){
 
-    /*
-    climb_type = 1: climb up arm first
-    climb_type = 2: climb up body first
-
-
-    */
-
-   if(innerMPU.accelX>0){
-    while (innerMPU.accelX>-0.13)
+   if(innerMPU.accelX>0.20){
+    while (innerMPU.accelX>0.08)
     {
         innerMPU.readAccel();
         outerMPU.readAccel();
@@ -116,13 +109,13 @@ void Robot::stair_climb(uint8_t climb_type){
         outerMPU.readAccel();
         innerMPU.print();
         outerMPU.print();
-        outer_stop();
-        inner_up();
+        inner_stop();
+        outer_down();
     }
    }
 
-   else if(innerMPU.accelX<-0.35){
-    while (innerMPU.accelX<-0.17)
+   else if(innerMPU.accelX<-0.20){
+    while (innerMPU.accelX<-0.08)
     {
         innerMPU.readAccel();
         outerMPU.readAccel();
@@ -133,7 +126,7 @@ void Robot::stair_climb(uint8_t climb_type){
     }
    }
 
-   else if(outerMPU.accelY>0.15){
+   else if(outerMPU.accelY>0.20){
     while (outerMPU.accelY>0.08)
     {
         innerMPU.readAccel();
@@ -146,20 +139,68 @@ void Robot::stair_climb(uint8_t climb_type){
     }
    }
    else{
-    switch (climb_type)
-    {
-    case CLIMB_TYPE_ARM_FIRST:
         climb_up_outer();
-        break;
-    case CLIMB_TYPE_BODY_FIRST:
-        climb_up_inner();
-        break;
-    default:
-        break;
+   
     }
-    
-   }
+}
 
+void Robot::stair_climb_inner_first(){
+    if(innerMPU.accelX>0.25){
+        while (innerMPU.accelX>0.08)
+        {
+            innerMPU.readAccel();
+            outerMPU.readAccel();
+            innerMPU.print();
+            outerMPU.print();
+            outer_up();
+            inner_stop();
+        }
+       }
+    
+       else if(outerMPU.accelY<-0.22){
+        while (outerMPU.accelY<-0.08)
+        {
+            #define OUTER_LEFT_UP 'q'
+            #define OUTER_LEFT_DOWN 'z'
+            #define OUTER_RIGHT_UP 'e'
+            #define OUTER_RIGHT
+            innerMPU.readAccel();
+            outerMPU.readAccel();
+            innerMPU.print();
+            outerMPU.print();
+            inner_down();
+            outer_stop();
+        }
+       }
+    
+       else if(innerMPU.accelX<-0.15){
+        while (innerMPU.accelX<-0.08)
+        {
+            innerMPU.readAccel();
+            outerMPU.readAccel();
+            innerMPU.print();
+            outerMPU.print();
+            outer_stop();
+            inner_down();
+        }
+       }
+    
+       else if(outerMPU.accelY>0.20){
+        while (outerMPU.accelY>0.08)
+        {
+            innerMPU.readAccel();
+            outerMPU.readAccel();
+            innerMPU.print();
+            outerMPU.print();
+            outer_up();
+            inner_stop();
+            
+        }
+       }
+       else{
+            climb_up_inner();
+       
+        }
 }
 
 void Robot::robot_forward(){
@@ -258,10 +299,10 @@ void Robot::manualControl(){
     //profile 2
     
     case AUTO_CLIMB_UP_ARM_FIRST:
-        stair_climb(CLIMB_TYPE_ARM_FIRST);
+        stair_climb_outer_first();
         break;
     case AUTO_CLIMB_UP_BODY_FIRST:
-        stair_climb(CLIMB_TYPE_BODY_FIRST);
+        stair_climb_inner_first();
         break;
 
     case STOP:

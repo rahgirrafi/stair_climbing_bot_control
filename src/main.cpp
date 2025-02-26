@@ -7,21 +7,22 @@
 Robot robot;
 
 void setup() {
+  Serial.begin(9600);
   robot.init();
 
 }
 
 void loop() {
   
-  // robot.innerMPU.readAccel();
-  // robot.outerMPU.readAccel();
-  // robot.innerMPU.print();
+  robot.innerMPU.readAccel();
+  robot.outerMPU.readAccel();
+  robot.innerMPU.print();
   // robot.outerMPU.print();
   // robot.stair_climb(100);
 
+//  Serial.println("Enter Command");
 
-
+  robot.manualControl();
   
-
   }
 

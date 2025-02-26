@@ -26,7 +26,7 @@ void MPU::init(){
     Wire.write(0x1C); //Accessing the register 1C - Acccelerometer Configuration (Sec. 4.5) 
     Wire.write(0); //Setting the accel to +/- 2g
     Wire.endTransmission(true); 
-    Serial.begin(9600);
+   
     
    
 }
